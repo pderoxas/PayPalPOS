@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane id="mainGridPain" fx:id="mainGridPane" alignment="TOP_CENTER" focusTraversable="false" gridLinesVisible="false" hgap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="true" prefHeight="767.2500457763672" prefWidth="1011.9998779296875" snapToPixel="false" styleClass="root" vgap="0.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.paypal.pos.Controller">
+  <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+    <children>
+      <Pane fx:id="loginPane" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" visible="true">
+        <children>
+          <TextField fx:id="username" layoutX="414.0" layoutY="381.0" prefWidth="200.0" />
+          <Label alignment="CENTER_RIGHT" layoutX="255.0" layoutY="384.0" prefWidth="150.0" text="Username" />
+          <Label alignment="CENTER_RIGHT" layoutX="255.0" layoutY="421.0" prefWidth="150.0" text="Password" />
+          <PasswordField fx:id="password" layoutX="414.0" layoutY="418.0" prefWidth="200.0" />
+          <Button layoutX="429.0" layoutY="456.0" mnemonicParsing="false" onAction="#login" text="Login">
+            <font>
+              <Font size="16.0" fx:id="x1" />
+            </font>
+          </Button>
+          <Button font="$x1" layoutX="521.0" layoutY="456.0" mnemonicParsing="false" onAction="#cancelLogin" text="Cancel" />
+          <ImageView fitHeight="91.140625" fitWidth="263.638418079096" layoutX="382.0" layoutY="262.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+              <Image url="@../images/paypal-logo.png" />
+            </image>
+          </ImageView>
+        </children>
+        <rotationAxis>
+          <Point3D />
+        </rotationAxis>
+      </Pane>
+      <TabPane id="tabs" fx:id="tabPane" focusTraversable="false" prefHeight="674.0" prefWidth="985.0" styleClass="formattedText" tabClosingPolicy="UNAVAILABLE" visible="true">
+        <stylesheets>
+          <URL value="@../styles/main.css" />
+        </stylesheets>
+        <tabs>
+          <Tab text="Purchase">
+            <content>
+              <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="762.0" prefWidth="1011.0">
+                <children>
+                  <GridPane alignment="TOP_CENTER" gridLinesVisible="false" layoutX="21.0" layoutY="0.0" prefHeight="687.0" prefWidth="948.0" snapToPixel="false">
+                    <Group id="Group" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <GridPane fx:id="transactionAmounts" minHeight="-Infinity" minWidth="411.0" prefHeight="183.0" prefWidth="439.0" style="-fx-background-color: #BBDAFF;" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                      <children>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="Sub Total:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="subTotalField" alignment="CENTER_RIGHT" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="taxLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="Tax:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <TextField fx:id="taxField" alignment="CENTER_RIGHT" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="TOTAL:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <TextField fx:id="totalField" alignment="CENTER_RIGHT" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="Discount Percent:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField id="subTotalField" fx:id="discountPercentField" alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="Discount Amount:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <TextField id="subTotalField" fx:id="discountAmountField" alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="Total Before Tax:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextField id="subTotalField" fx:id="totalBeforeTaxField" alignment="CENTER_RIGHT" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="21.0" prefWidth="150.0" text="CHECK OUT" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                      </children>
+                      <columnConstraints>
+                        <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="361.0" minWidth="-Infinity" prefWidth="219.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="277.0" minWidth="-Infinity" prefWidth="220.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints maxHeight="45.0" minHeight="0.0" prefHeight="6.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="9.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="79.0" minHeight="7.0" prefHeight="7.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="79.0" minHeight="7.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="79.0" minHeight="7.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
+                    <GridPane fx:id="customerDetails" minHeight="-Infinity" minWidth="411.0" prefHeight="183.0" prefWidth="439.0" style="-fx-background-color: #BBDAFF;&#10;" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                      <children>
+                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="Customer Name:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="21.0" prefWidth="166.0" text="Add Loyalty ID" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="Loyalty Number:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="PayPal Customer ID:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                      </children>
+                      <columnConstraints>
+                        <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="361.0" minWidth="-Infinity" prefWidth="219.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="277.0" minWidth="-Infinity" prefWidth="220.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints maxHeight="45.0" minHeight="0.0" prefHeight="6.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="9.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="79.0" minHeight="7.0" prefHeight="7.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="79.0" minHeight="7.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="79.0" minHeight="7.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="483.0" minWidth="10.0" prefWidth="439.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="383.0" minWidth="0.0" prefWidth="15.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="504.0" minWidth="10.0" prefWidth="444.0" />
+                    </columnConstraints>
+                    <TextArea fx:id="receiptField" editable="false" maxHeight="-1.0" prefHeight="420.0" prefWidth="439.0" styleClass="formattedText" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                      <stylesheets>
+                        <URL value="@../styles/main.css" />
+                      </stylesheets>
+                    </TextArea>
+                    <GridPane prefHeight="196.0" prefWidth="444.0" style="-fx-background-color: #BBDAFF;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                      <children>
+                        <ListView id="itemListView" fx:id="itemsListView" maxHeight="-1.0" minHeight="-1.0" prefHeight="321.0" prefWidth="444.0" styleClass="formattedText" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                          <stylesheets>
+                            <URL value="@../styles/main.css" />
+                          </stylesheets>
+                        </ListView>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                          <children>
+                            <GridPane alignment="CENTER" prefHeight="53.0" prefWidth="327.99993896484375">
+                              <children>
+                                <Button alignment="CENTER" contentDisplay="CENTER" disable="false" focusTraversable="true" onAction="#addItem" prefWidth="130.0" text="Add Item" textAlignment="CENTER" underline="false" visible="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <Button alignment="CENTER" contentDisplay="CENTER" onAction="#removeItem" prefWidth="130.0" text="Remove Item" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                              </children>
+                              <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="166.0" minWidth="10.0" prefWidth="157.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="49.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="143.0" />
+                              </columnConstraints>
+                              <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              </rowConstraints>
+                            </GridPane>
+                          </children>
+                        </HBox>
+                        <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                          <children>
+                            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="175.0" text="Cashier:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <Label id="cashierNameLabel" fx:id="salesAssociateLabel" alignment="CENTER_LEFT" contentDisplay="CENTER" prefWidth="200.00006103515625" text="" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="175.0" text="Sales Associate:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <Text fx:id="cashierText" strokeType="OUTSIDE" strokeWidth="0.0" text="N/A" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <Text fx:id="salesAssociateText" strokeType="OUTSIDE" strokeWidth="0.0" text="N/A" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                          </children>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="188.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="277.0" minWidth="10.0" prefWidth="256.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="39.0" minHeight="1.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="41.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                      </children>
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints maxHeight="395.0" minHeight="10.0" prefHeight="324.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="344.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="344.0" minHeight="9.0" prefHeight="63.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
+                    <padding>
+                      <Insets bottom="10.0" left="25.0" right="25.0" top="25.0" />
+                    </padding>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="375.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="487.0" minHeight="3.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="487.0" minHeight="10.0" prefHeight="420.0" vgrow="SOMETIMES" />
+                      <RowConstraints fillHeight="false" maxHeight="350.0" prefHeight="13.0" />
+                      <RowConstraints fillHeight="false" maxHeight="350.0" prefHeight="192.0" />
+                      <RowConstraints fillHeight="false" maxHeight="350.0" prefHeight="0.0" />
+                      <RowConstraints maxHeight="0.0" prefHeight="0.0" />
+                    </rowConstraints>
+                    <stylesheets>
+                      <URL value="@../styles/main.css" />
+                    </stylesheets>
+                    <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="LEFT" visible="true" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label id="timestampLabel" fx:id="transactionIdLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="21.0" prefWidth="425.0" text="Transaction ID" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label fx:id="timestampLabel" alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="430.0" text="Date Timestamp" textAlignment="RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  </GridPane>
+                </children>
+              </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Return">
+            <content>
+              <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+    </children>
+  </StackPane>
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="762.0" minHeight="0.0" prefHeight="743.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+</GridPane>
