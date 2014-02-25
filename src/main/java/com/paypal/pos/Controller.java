@@ -1,12 +1,13 @@
 package com.paypal.pos;
 
 
-import com.paypal.pos.model.InStoreItem;
-import com.paypal.pos.model.Item;
-import com.paypal.pos.model.Transaction;
+import com.paypal.pos.model.*;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,17 +17,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import org.apache.commons.lang.*;
+import org.controlsfx.control.ButtonBar;
+import org.controlsfx.control.action.AbstractAction;
 import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialogs;
+import org.controlsfx.dialog.Dialog;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -37,6 +39,7 @@ public class Controller implements Initializable {
 
     private Transaction transaction = new Transaction();
     private static final double TAX_RATE = 7.0;
+    private static boolean isStoreOpen = false;
 
     @FXML private GridPane mainGridPane;
 
@@ -48,6 +51,13 @@ public class Controller implements Initializable {
     @FXML private Label timestampLabel;
     @FXML private Text cashierText;
     @FXML private Text salesAssociateText;
+
+    //LOYALTY DIALOG
+    @FXML private Text loyaltyNumberText;
+    @FXML private Text customerNameText;
+    @FXML private Text payCodeText;
+
+
     @FXML private Label taxLabel;
     @FXML private Label transactionIdLabel;
     @FXML private TextArea receiptField;
@@ -63,6 +73,70 @@ public class Controller implements Initializable {
     private List<Item> items = new ArrayList<Item>();
     private List<String> displayNameList = new ArrayList<String>();
     private double subtotal  = 0.0;
+
+    final TextField payCodeTextField = new TextField();
+
+
+    /**
+     * HOOK to call PayPal SDK getWallet method
+     */
+    final Action getWallet = new AbstractAction("Lookup") {
+        {
+            ButtonBar.setType(this, ButtonBar.ButtonType.OK_DONE);
+        }
+
+        // This method is called when the Save button is clicked...
+        public void execute(ActionEvent ae) {
+            Dialog loyaltyDialog = (Dialog) ae.getSource();
+
+            //TODO: Call to SDK to get information!!
+            payCodeText.setText(payCodeTextField.getText());
+            loyaltyNumberText.setText("274658294824");
+            customerNameText.setText("Joseph Smith");
+
+            loyaltyDialog.hide();
+        }
+    };
+
+    /**
+     * HOOK to call PayPal SDK getWallet method
+     */
+    final Action openStore = new AbstractAction("Open Store") {
+        {
+            ButtonBar.setType(this, ButtonBar.ButtonType.OK_DONE);
+        }
+
+        // This method is called when the Save button is clicked...
+        public void execute(ActionEvent ae) {
+            Dialog dialog = (Dialog) ae.getSource();
+
+            //TODO: Call to SDK to get information!!
+            isStoreOpen = true;
+
+            dialog.hide();
+        }
+    };
+
+    /**
+     * HOOK to call PayPal SDK getWallet method
+     */
+    final Action closeStore = new AbstractAction("Close Store") {
+        {
+            ButtonBar.setType(this, ButtonBar.ButtonType.OK_DONE);
+        }
+
+        // This method is called when the Save button is clicked...
+        public void execute(ActionEvent ae) {
+            Dialog dialog = (Dialog) ae.getSource();
+
+            //TODO: Call to SDK to get information!!
+            isStoreOpen = false;
+
+            dialog.hide();
+        }
+    };
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -100,11 +174,14 @@ public class Controller implements Initializable {
 
 
         for (Item item : items){
-            displayNameList.add(getDisplayName(item,"add"));
+            displayNameList.add(Utils.getDisplayName(item,"add"));
         }
 
         ObservableList<String> itemsList = FXCollections.observableList(displayNameList);
         itemsListView.setItems(itemsList);
+
+        //Hide the main pane
+        tabPane.setVisible(false);
 
         //running timestamp
         bindToTime();
@@ -128,6 +205,10 @@ public class Controller implements Initializable {
         //TODO: use names instead of username??
         cashierText.setText(username.getText());
         salesAssociateText.setText(username.getText());
+
+        if(!isStoreOpen) {
+            showOpenStoreDialog();
+        }
     }
 
     @FXML protected void cancelLogin(ActionEvent event) {
@@ -135,22 +216,113 @@ public class Controller implements Initializable {
         password.setText("");
     }
 
-    @FXML protected void cancelLoyalty(ActionEvent event) {
-        username.setText("");
-        password.setText("");
-    }
-
-
     @FXML protected void logout(ActionEvent event) {
         tabPane.setVisible(false);
         loginPane.setVisible(true);
         password.setText("");
+
+        if(isStoreOpen) {
+            showCloseStoreDialog();
+        }
     }
+
+    // This method is called when the user types into the text fields
+    private void validateLoyaltyFields() {
+        getWallet.disabledProperty().set(payCodeTextField.getText().trim().isEmpty());
+    }
+
+    // Imagine that this method is called somewhere in your codebase
+    @FXML protected void addLoyalty(ActionEvent event) {
+        Dialog loyaltyDialog = new Dialog(null, "Loyalty Lookup");
+
+        // listen to user input on dialog (to enable / disable the button)
+        ChangeListener<String> changeListener = new ChangeListener<String>() {
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                validateLoyaltyFields();
+            }
+        };
+        payCodeTextField.textProperty().addListener(changeListener);
+        //txPassword.textProperty().addListener(changeListener);
+
+        // layout a custom GridPane containing the input fields and labels
+        final GridPane content = new GridPane();
+        content.setHgap(10);
+        content.setVgap(10);
+
+        content.add(new Label("PayPal Pay Code"), 0, 0);
+        content.add(payCodeTextField, 1, 0);
+        GridPane.setHgrow(payCodeTextField, Priority.ALWAYS);
+
+        //content.add(new Label("Password"), 0, 1);
+        //content.add(txPassword, 1, 1);
+        //GridPane.setHgrow(txPassword, Priority.ALWAYS);
+
+        // create the dialog with a custom graphic and the gridpane above as the
+        // main content region
+        loyaltyDialog.setResizable(false);
+        loyaltyDialog.setIconifiable(false);
+        loyaltyDialog.setContent(content);
+        loyaltyDialog.getActions().addAll(getWallet, Dialog.Actions.CANCEL);
+        validateLoyaltyFields();
+
+        // request focus on the username field by default (so the user can
+        // type immediately without having to click first)
+        Platform.runLater(new Runnable() {
+            public void run() {
+                payCodeTextField.requestFocus();
+            }
+        });
+
+        loyaltyDialog.show();
+    }
+
+
+    private void showOpenStoreDialog() {
+        tabPane.setOpacity(0.5);
+        Dialog dialog = new Dialog(null, "Open/Close Store");
+        final GridPane content = new GridPane();
+        content.setHgap(10);
+        content.setVgap(10);
+        content.add(new Label("The store is CLOSED. Would you like to open the store?"), 0, 0);
+        dialog.setResizable(false);
+        dialog.setIconifiable(false);
+        dialog.setContent(content);
+        dialog.getActions().addAll(openStore, Dialog.Actions.CANCEL);
+        validateLoyaltyFields();
+        Action response = dialog.show();
+
+        if (response == Dialog.Actions.CANCEL || response == Dialog.Actions.CLOSE) {
+            loginPane.setVisible(true);
+            tabPane.setVisible(false);
+        } else {
+            tabPane.setVisible(true);
+            tabPane.setOpacity(1);
+        }
+    }
+
+    private void showCloseStoreDialog() {
+        Dialog dialog = new Dialog(null, "Open/Close Store");
+        final GridPane content = new GridPane();
+        content.setHgap(10);
+        content.setVgap(10);
+        content.add(new Label("The store is OPEN. Would you like to close the store?"), 0, 0);
+        dialog.setResizable(false);
+        dialog.setIconifiable(false);
+        dialog.setContent(content);
+        dialog.getActions().addAll(closeStore, Dialog.Actions.CANCEL);
+        validateLoyaltyFields();
+        dialog.show();
+    }
+
+
+
+
+
 
     @FXML protected void addItem(ActionEvent event) {
         int selectedIndex = itemsListView.getSelectionModel().getSelectedIndex();
         Item selectedItem = items.get(selectedIndex);
-        receiptField.appendText("\n" + getDisplayName(selectedItem,"add"));
+        receiptField.appendText("\n" + Utils.getDisplayName(selectedItem,"add"));
         subtotal = subtotal + selectedItem.getUnitPrice().doubleValue();
 
         updateFields();
@@ -159,7 +331,7 @@ public class Controller implements Initializable {
     @FXML protected void removeItem(ActionEvent event) {
         int selectedIndex = itemsListView.getSelectionModel().getSelectedIndex();
         Item selectedItem = items.get(selectedIndex);
-        receiptField.appendText("\n " + getDisplayName(selectedItem,"remove"));
+        receiptField.appendText("\n " + Utils.getDisplayName(selectedItem,"remove"));
         subtotal = subtotal - selectedItem.getUnitPrice().doubleValue();
 
         updateFields();
@@ -192,29 +364,7 @@ public class Controller implements Initializable {
         totalField.setText(currency.format(total));
     }
 
-    private String getDisplayName(Item item, String action){
-        StringBuilder sb = new StringBuilder();
-        String id = item.getId().toString();
-        String desc = item.getDescription();
-        String unitPrice = item.getUnitPrice().toPlainString();
 
-        if(desc.length()> 20) { desc = desc.substring(0,19); }
-
-
-        if(action.equals("remove")){
-            sb.append(StringUtils.leftPad(id, 9));
-            sb.append(StringUtils.leftPad(desc, 30));
-            sb.append(StringUtils.leftPad("(" + unitPrice + ")", 11));
-            sb.append(StringUtils.leftPad(item.getCurrency().getCurrencyCode(), 5));
-        } else {
-            sb.append(StringUtils.leftPad(id, 10));
-            sb.append(StringUtils.leftPad(desc, 30));
-            sb.append(StringUtils.leftPad(unitPrice, 10));
-            sb.append(StringUtils.leftPad(item.getCurrency().getCurrencyCode(), 6));
-        }
-
-        return sb.toString();
-    }
 
     private void bindToTime() {
         Timeline timeline = new Timeline(

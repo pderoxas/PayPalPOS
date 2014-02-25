@@ -23,10 +23,6 @@ public class InStoreItem implements Item{
         this.discountPercent = discountPercent;
         this.numberInStock = numberInStock;
     }
-    @Override
-    public String getId() {
-        return this.id;
-    }
 
     @Override
     public BigDecimal getUnitPrice() {
@@ -39,6 +35,9 @@ public class InStoreItem implements Item{
     }
 
     @Override
+    public Object getId() { return this.id; }
+
+    @Override
     public String getDescription() {
         return this.description;
     }
@@ -47,13 +46,4 @@ public class InStoreItem implements Item{
     public Currency getCurrency() {
         return currency != null ? currency : Currency.getInstance(Locale.US);
     }
-
-    public int getNumberInStock() {
-        return this.numberInStock;
-    }
-
-    public void setNumberInStock(int numberInStock) {
-        this.numberInStock = numberInStock;
-    }
-
 }

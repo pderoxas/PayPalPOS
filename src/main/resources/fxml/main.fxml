@@ -36,7 +36,7 @@
           <Point3D />
         </rotationAxis>
       </Pane>
-      <TabPane id="tabs" fx:id="tabPane" focusTraversable="false" prefHeight="674.0" prefWidth="985.0" styleClass="formattedText" tabClosingPolicy="UNAVAILABLE" visible="true">
+      <TabPane id="tabs" fx:id="tabPane" focusTraversable="false" opacity="1.0" prefHeight="674.0" prefWidth="985.0" styleClass="formattedText" tabClosingPolicy="UNAVAILABLE" visible="false">
         <stylesheets>
           <URL value="@../styles/main.css" />
         </stylesheets>
@@ -46,6 +46,7 @@
               <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="762.0" prefWidth="1011.0">
                 <children>
                   <GridPane alignment="TOP_CENTER" gridLinesVisible="false" layoutX="21.0" layoutY="0.0" prefHeight="687.0" prefWidth="948.0" snapToPixel="false">
+                    <Label id="timestampLabel" fx:id="transactionIdLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="21.0" prefWidth="425.0" text="Transaction ID" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <Group id="Group" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                     <GridPane fx:id="transactionAmounts" minHeight="-Infinity" minWidth="411.0" prefHeight="183.0" prefWidth="439.0" style="-fx-background-color: #BBDAFF;" GridPane.columnIndex="0" GridPane.rowIndex="4">
                       <children>
@@ -80,12 +81,20 @@
                         <RowConstraints maxHeight="79.0" minHeight="7.0" prefHeight="10.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                     </GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="483.0" minWidth="10.0" prefWidth="439.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="383.0" minWidth="0.0" prefWidth="15.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="504.0" minWidth="10.0" prefWidth="444.0" />
+                    </columnConstraints>
                     <GridPane fx:id="customerDetails" minHeight="-Infinity" minWidth="411.0" prefHeight="183.0" prefWidth="439.0" style="-fx-background-color: #BBDAFF;&#10;" GridPane.columnIndex="2" GridPane.rowIndex="4">
                       <children>
                         <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="Customer Name:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="21.0" prefWidth="166.0" text="Add Loyalty ID" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#addLoyalty" prefHeight="21.0" prefWidth="166.0" text="Add Loyalty" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                         <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="Loyalty Number:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="PayPal Customer ID:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="209.0" text="Pay Code:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Text fx:id="loyaltyNumberText" strokeType="OUTSIDE" strokeWidth="0.0" text="N/A" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Text id="customNameText" fx:id="customerNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="N/A" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Text id="paypalCustomerIdText" fx:id="payCodeText" strokeType="OUTSIDE" strokeWidth="0.0" text="N/A" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                       </children>
                       <columnConstraints>
                         <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="361.0" minWidth="-Infinity" prefWidth="219.0" />
@@ -104,17 +113,27 @@
                         <RowConstraints maxHeight="79.0" minHeight="7.0" prefHeight="10.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                     </GridPane>
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="483.0" minWidth="10.0" prefWidth="439.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="383.0" minWidth="0.0" prefWidth="15.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="504.0" minWidth="10.0" prefWidth="444.0" />
-                    </columnConstraints>
                     <TextArea fx:id="receiptField" editable="false" maxHeight="-1.0" prefHeight="420.0" prefWidth="439.0" styleClass="formattedText" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="2">
                       <stylesheets>
                         <URL value="@../styles/main.css" />
                       </stylesheets>
                     </TextArea>
-                    <GridPane prefHeight="196.0" prefWidth="444.0" style="-fx-background-color: #BBDAFF;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                    <padding>
+                      <Insets bottom="10.0" left="25.0" right="25.0" top="25.0" />
+                    </padding>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="375.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="487.0" minHeight="3.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="487.0" minHeight="10.0" prefHeight="420.0" vgrow="SOMETIMES" />
+                      <RowConstraints fillHeight="false" maxHeight="350.0" prefHeight="13.0" />
+                      <RowConstraints fillHeight="false" maxHeight="350.0" prefHeight="192.0" />
+                      <RowConstraints fillHeight="false" maxHeight="350.0" prefHeight="0.0" />
+                      <RowConstraints maxHeight="0.0" prefHeight="0.0" />
+                    </rowConstraints>
+                    <stylesheets>
+                      <URL value="@../styles/main.css" />
+                    </stylesheets>
+                    <GridPane prefHeight="196.0" prefWidth="444.0" style="-fx-background-color: #E1E1FF;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                       <children>
                         <ListView id="itemListView" fx:id="itemsListView" maxHeight="-1.0" minHeight="-1.0" prefHeight="321.0" prefWidth="444.0" styleClass="formattedText" GridPane.columnIndex="0" GridPane.rowIndex="0">
                           <stylesheets>
@@ -166,23 +185,7 @@
                         <RowConstraints maxHeight="344.0" minHeight="9.0" prefHeight="63.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                     </GridPane>
-                    <padding>
-                      <Insets bottom="10.0" left="25.0" right="25.0" top="25.0" />
-                    </padding>
-                    <rowConstraints>
-                      <RowConstraints maxHeight="375.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="487.0" minHeight="3.0" prefHeight="27.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="487.0" minHeight="10.0" prefHeight="420.0" vgrow="SOMETIMES" />
-                      <RowConstraints fillHeight="false" maxHeight="350.0" prefHeight="13.0" />
-                      <RowConstraints fillHeight="false" maxHeight="350.0" prefHeight="192.0" />
-                      <RowConstraints fillHeight="false" maxHeight="350.0" prefHeight="0.0" />
-                      <RowConstraints maxHeight="0.0" prefHeight="0.0" />
-                    </rowConstraints>
-                    <stylesheets>
-                      <URL value="@../styles/main.css" />
-                    </stylesheets>
                     <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="LEFT" visible="true" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <Label id="timestampLabel" fx:id="transactionIdLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="21.0" prefWidth="425.0" text="Transaction ID" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <Label fx:id="timestampLabel" alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="430.0" text="Date Timestamp" textAlignment="RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   </GridPane>
                 </children>
