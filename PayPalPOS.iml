@@ -19,6 +19,15 @@
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: org.controlsfx:controlsfx:8.0.4" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: com.oracle:javafx:2.2">
+        <CLASSES>
+          <root url="jar:///usr/java/jdk1.8.0/jre/lib/ext/jfxrt.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

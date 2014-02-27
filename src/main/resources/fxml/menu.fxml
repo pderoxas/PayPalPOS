@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane alignment="CENTER_RIGHT" gridLinesVisible="false" hgap="5.0" layoutX="0.0" layoutY="0.0" prefHeight="768.0" prefWidth="1024.0" snapToPixel="false" vgap="5.0" visible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.paypal.pos.controller.MenuController">
+  <TilePane alignment="CENTER" hgap="50.0" orientation="HORIZONTAL" prefHeight="768.0" prefWidth="1024.0" tileAlignment="CENTER" vgap="20.0" visible="true">
+    <children>
+      <ImageView fitHeight="199.50006332397405" fitWidth="266.0000915527344" onMouseClicked="#handleOpenCloseStore" pickOnBounds="true" preserveRatio="true">
+        <image>
+          <Image url="@../images/openClose.png" />
+        </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" onMouseClicked="#handleItemSale" pickOnBounds="true" preserveRatio="true">
+        <image>
+          <Image url="@../images/sales.png" />
+        </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" onMouseClicked="#handleItemReturn" pickOnBounds="true" preserveRatio="true">
+        <image>
+          <Image url="@../images/returns.png" />
+        </image>
+      </ImageView>
+    </children>
+    <stylesheets>
+      <URL value="@../styles/main.css" />
+    </stylesheets>
+  </TilePane>
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+  </columnConstraints>
+  <Label fx:id="storeStatusLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="1023.9998779296875" style="    -fx-font-size: 24px;&#10;    -fx-font-weight: bold;" text="Store Status" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+  <padding>
+    <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+  </padding>
+  <rowConstraints>
+    <RowConstraints maxHeight="750.0" minHeight="10.0" prefHeight="610.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="202.0" minHeight="10.0" prefHeight="153.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+</GridPane>

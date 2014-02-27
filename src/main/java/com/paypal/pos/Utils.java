@@ -49,4 +49,37 @@ public class Utils {
 
         return sb.toString();
     }
+
+    public static String getReceiptHeader(String dateTime, String transactionId, String cashierName){
+        StringBuilder sb = new StringBuilder();
+        sb.append(getCenteredString("Acme Auto Parts\n", 29));
+        sb.append(getCenteredString("Store Number: 12345678\n", 29));
+        sb.append(getCenteredString("Providence, RI 02903\n", 29));
+        sb.append(getCenteredString("Phone: 401-555-5555\n", 29));
+        sb.append(getJustifiedString(dateTime, transactionId, 57));
+        sb.append(getJustifiedString("Cashier: " + cashierName, "Register Number: 123", 57));
+        sb.append("*********************************************************");
+        return sb.toString();
+    }
+
+    public static String getReceiptFooter(String subTotal, String discountPercent, String discountAmount, String tax, String total){
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n*********************************************************");
+        sb.append(getJustifiedString("                         SubTotal", subTotal + " ", 57));
+        sb.append(getJustifiedString("                         " + discountPercent + " Discount", "(" + discountAmount + ")", 57));
+        sb.append(getJustifiedString("                         Tax", tax + " ", 57));
+        sb.append(getJustifiedString("                         Total", total + " ", 57));
+
+        return sb.toString();
+    }
+
+    private static String getCenteredString(String text, int midPoint){
+        int len = text.length();
+        return StringUtils.leftPad(text, midPoint + len/2);
+    }
+
+    private static String getJustifiedString(String leftText, String rightText, int totalLength){
+        int leftLen = leftText.length();
+        return leftText + StringUtils.leftPad(rightText, totalLength - leftLen) +"\n";
+    }
 }
