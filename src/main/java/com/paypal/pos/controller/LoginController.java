@@ -17,6 +17,9 @@ import org.controlsfx.dialog.Dialog;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Created by pderoxas on 2/26/14.
+ */
 public class LoginController implements Initializable, ManagedPane {
     private Logger logger = Logger.getLogger(this.getClass());
     PaneManager paneManager;
@@ -26,7 +29,6 @@ public class LoginController implements Initializable, ManagedPane {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //TODO
-
         logger.debug("initializing...");
     }
 
@@ -57,8 +59,4 @@ public class LoginController implements Initializable, ManagedPane {
         paneManager.setPane(PayPalPos.LOGIN);
         PayPalPos.currentCashier = null;
     }
-
-
-
-
 }

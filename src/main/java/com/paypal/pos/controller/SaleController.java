@@ -7,9 +7,6 @@ import com.paypal.pos.dal.InStoreItemDAO;
 import com.paypal.pos.exception.DalException;
 import com.paypal.pos.model.*;
 import com.paypal.pos.service.PayPalSdkAdapter;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -36,7 +33,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.controlsfx.control.ButtonBar;
@@ -48,7 +44,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 
-
+/**
+ * Created by pderoxas on 2/26/14.
+ */
 public class SaleController implements Initializable, ManagedPane {
     private Logger logger = Logger.getLogger(this.getClass());
     PaneManager paneManager;
@@ -61,46 +59,61 @@ public class SaleController implements Initializable, ManagedPane {
     private static final double TAX_RATE = 7.0;
     public static Transaction currentTransaction;
 
-    @FXML private Label timestampLabel;
-    @FXML private Text cashierText;
-    @FXML private Text registerText;
+    @FXML
+    private Label timestampLabel;
+    @FXML
+    private Text cashierText;
+    @FXML
+    private Text registerText;
 
     //LOYALTY DIALOG
-    @FXML private Text loyaltyNumberText;
-    @FXML private Text customerNameText;
-    @FXML private Text payCodeText;
+    @FXML
+    private Text loyaltyNumberText;
+    @FXML
+    private Text customerNameText;
+    @FXML
+    private Text payCodeText;
 
 
-    @FXML private Label taxLabel;
-    @FXML private Label transactionIdLabel;
-    @FXML private TextArea receiptField;
-    @FXML private ListView<String> itemsListView;
-    @FXML private TextField discountPercentField;
-    @FXML private TextField discountAmountField;
-    @FXML private TextField totalBeforeTaxField;
-    @FXML private TextField taxField;
-    @FXML private TextField subTotalField;
-    @FXML private TextField totalField;
+    @FXML
+    private Label taxLabel;
+    @FXML
+    private Label transactionIdLabel;
+    @FXML
+    private TextArea receiptField;
+    @FXML
+    private ListView<String> itemsListView;
+    @FXML
+    private TextField discountPercentField;
+    @FXML
+    private TextField discountAmountField;
+    @FXML
+    private TextField totalBeforeTaxField;
+    @FXML
+    private TextField taxField;
+    @FXML
+    private TextField subTotalField;
+    @FXML
+    private TextField totalField;
 
     //item profile
-    @FXML private ImageView itemImage;
-    @FXML private Text skuText;
-    @FXML private Text unitPriceText;
-    @FXML private Text descriptionText;
+    @FXML
+    private ImageView itemImage;
+    @FXML
+    private Text skuText;
+    @FXML
+    private Text unitPriceText;
+    @FXML
+    private Text descriptionText;
 
-    private double subtotal  = 0.0;
-    BigDecimal decimalSubtotal;
-    BigDecimal decimalDiscountPercent;
-    BigDecimal decimalDiscountAmount;
-    BigDecimal decimalTotalBeforeTax;
-    BigDecimal decimalSalesTaxPercent;
-    BigDecimal decimalSalesTax;
-    BigDecimal decimalTotal;
-
-    private double total = 0.0;
-    private double tax = 0.0;
-    private double discount = 0.0;
-    private double discountPercent = 0.0;
+    private double subtotal = 0.0;
+    private BigDecimal decimalSubtotal;
+    private BigDecimal decimalDiscountPercent;
+    private BigDecimal decimalDiscountAmount;
+    private BigDecimal decimalTotalBeforeTax;
+    private BigDecimal decimalSalesTaxPercent;
+    private BigDecimal decimalSalesTax;
+    private BigDecimal decimalTotal;
 
     final TextField payCodeTextField = new TextField();
     final Button cashButton = new Button("Pay");
@@ -108,45 +121,56 @@ public class SaleController implements Initializable, ManagedPane {
     final Button paypalButton = new Button("Pay");
 
 
-    @FXML protected void logout(MouseEvent event) {
-        //Just bring send to LOGIN
+    @FXML
+    protected void logout(MouseEvent event) {
         //TODO - add actual logout logic
         paneManager.setPane(PayPalPos.LOGIN);
     }
 
-    /**
-     * HOOK to call PayPal SDK getWallet method
-     */
+    @FXML
+    protected void openStore(MouseEvent event) {
+        showOpenStoreDialog();
+    }
+
+    @FXML
+    protected void closeStore(MouseEvent event) {
+        showCloseStoreDialog();
+    }
+
+    @FXML
+    protected void addLoyalty(ActionEvent event) {
+        showAddLoyaltyDialog();
+    }
+
+    @FXML
+    protected void checkout(ActionEvent event) {
+        showCheckoutDialog();
+    }
+
+
     final Action getWallet = new AbstractAction("Lookup") {
         {
             ButtonBar.setType(this, ButtonBar.ButtonType.OK_DONE);
         }
 
-        // This method is called when the Save button is clicked...
         public void execute(ActionEvent ae) {
             Dialog loyaltyDialog = (Dialog) ae.getSource();
-
-            //TODO: Call to SDK to get information!!
             wallet = payPalSdkAdapter.getWallet(payCodeTextField.getText());
-
             payCodeText.setText(wallet.getPaycode());
             loyaltyNumberText.setText(wallet.getLoyaltyNumber());
             customerNameText.setText(wallet.getCustomerName());
-
             loyaltyDialog.hide();
         }
     };
 
-    /**
-     * HOOK to call PayPal SDK openStore method
-     */
+
     final Action openStore = new AbstractAction("Open Location") {
         {
             ButtonBar.setType(this, ButtonBar.ButtonType.OK_DONE);
         }
 
-        // This method is called when the Save button is clicked...
         public void execute(ActionEvent ae) {
+            payPalSdkAdapter.openStore(PayPalPos.location.getStoreNumber());
             Dialog dialog = (Dialog) ae.getSource();
             dialog.hide();
             PayPalPos.isStoreOpen = true;
@@ -154,16 +178,14 @@ public class SaleController implements Initializable, ManagedPane {
         }
     };
 
-    /**
-     * HOOK to call PayPal SDK closeStore method
-     */
+
     final Action closeStore = new AbstractAction("Close Store") {
         {
             ButtonBar.setType(this, ButtonBar.ButtonType.OK_DONE);
         }
 
-        // This method is called when the Save button is clicked...
         public void execute(ActionEvent ae) {
+            payPalSdkAdapter.closeStore(PayPalPos.location.getStoreNumber());
             Dialog dialog = (Dialog) ae.getSource();
             dialog.hide();
             PayPalPos.isStoreOpen = false;
@@ -171,13 +193,6 @@ public class SaleController implements Initializable, ManagedPane {
         }
     };
 
-    @FXML protected void openStore(MouseEvent event) {
-        showCloseStoreDialog();
-    }
-
-    @FXML protected void closeStore(MouseEvent event) {
-        showCloseStoreDialog();
-    }
 
     protected void showOpenStoreDialog() {
         Dialog dialog = new Dialog(null, "Open/Close Store", true);
@@ -218,15 +233,6 @@ public class SaleController implements Initializable, ManagedPane {
     }
 
 
-
-    /**
-     * HOOK to call PayPal SDK makePayment method
-     */
-    protected void makePayment() {
-
-
-    }
-
     @Override
     public void setParent(PaneManager paneManager) {
         this.paneManager = paneManager;
@@ -234,22 +240,18 @@ public class SaleController implements Initializable, ManagedPane {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        final ListView<String> itemListView = new ListView<String>();
         itemsListView.setItems(Utils.getItemSkuList());
-
         registerText.setText(PayPalPos.location.getRegisterNumber());
         cashierText.setText(PayPalPos.currentCashier);
 
-
         //running timestamp
-        bindToTime();
+        Utils.bindToTime(timestampLabel);
 
         //set tax label
         taxLabel.setText(TAX_RATE + "% Tax:");
 
         //set the transaction id
-        int transactionId =  Utils.generateTransactionId();
+        int transactionId = Utils.generateTransactionId();
         transactionIdLabel.setText("Transaction ID: " + transactionId);
 
         Calendar time = Calendar.getInstance();
@@ -260,10 +262,8 @@ public class SaleController implements Initializable, ManagedPane {
 
         //instantiate a new transaction
         currentTransaction = new Transaction(String.valueOf(transactionId), PayPalPos.currentCashier, TransactionType.SALE);
-
         currentTransaction.setLocation(PayPalPos.location);
         currentTransaction.setTransactionDate(time.getTime());
-
     }
 
     // This method is called when the user types into the text fields
@@ -272,7 +272,7 @@ public class SaleController implements Initializable, ManagedPane {
     }
 
 
-    @FXML protected void addLoyalty(ActionEvent event) {
+    protected void showAddLoyaltyDialog() {
         Dialog dialog = new Dialog(null, "Loyalty Lookup", true);
 
         // listen to user input on dialog (to enable / disable the button)
@@ -282,7 +282,6 @@ public class SaleController implements Initializable, ManagedPane {
             }
         };
         payCodeTextField.textProperty().addListener(changeListener);
-        //txPassword.textProperty().addListener(changeListener);
 
         // layout a custom GridPane containing the input fields and labels
         final GridPane content = new GridPane();
@@ -293,34 +292,23 @@ public class SaleController implements Initializable, ManagedPane {
         content.add(payCodeTextField, 1, 0);
         GridPane.setHgrow(payCodeTextField, Priority.ALWAYS);
 
-        //content.add(new Label("Password"), 0, 1);
-        //content.add(txPassword, 1, 1);
-        //GridPane.setHgrow(txPassword, Priority.ALWAYS);
-
-        // create the dialog with a custom graphic and the gridpane above as the
-        // main content region
         dialog.setResizable(false);
         dialog.setIconifiable(false);
         dialog.setContent(content);
         dialog.getActions().addAll(getWallet, Dialog.Actions.CANCEL);
         validateLoyaltyFields();
 
-        // request focus on the username field by default (so the user can
-        // type immediately without having to click first)
+        // request focus on the paycode field by default
         Platform.runLater(new Runnable() {
             public void run() {
                 payCodeTextField.requestFocus();
             }
         });
-
         dialog.show();
     }
 
 
-
-
-
-    @FXML protected void checkout(ActionEvent event) {
+    protected void showCheckoutDialog() {
         Dialog dialog = new Dialog(null, "Check Out", true);
 
         // listen to user input on dialog (to enable / disable the button)
@@ -357,7 +345,7 @@ public class SaleController implements Initializable, ManagedPane {
         debitCreditGrid.setPadding(new Insets(5, 5, 5, 5));
 
         ListView<String> cardTypeList = new ListView<String>();
-        ObservableList<String> cardTypes =FXCollections.observableArrayList (
+        ObservableList<String> cardTypes = FXCollections.observableArrayList(
                 "American Express", "Diners Club", "MasterCard", "Visa");
         cardTypeList.setItems(cardTypes);
 
@@ -389,15 +377,12 @@ public class SaleController implements Initializable, ManagedPane {
         paypalGrid.add(new Label("PayPal Pay Code: "), 0, 1);
         paypalGrid.add(new TextField(payCodeText.getText()), 1, 1);
 
-
         Label authLabel = new Label("Authorization Code: ");
         authLabel.setVisible(false);
         Text authCode = new Text();
         authCode.setVisible(false);
         paypalGrid.add(new Label("Authorization Code: "), 0, 2);
         paypalGrid.add(authCode, 1, 2);
-
-
 
         PayPalPayment payment = new PayPalPayment(wallet);
         payment.setSubTotalAmount(decimalSubtotal);
@@ -420,7 +405,6 @@ public class SaleController implements Initializable, ManagedPane {
                     jsonMapper.writeValue(new File("data/" + currentTransaction.getId() + ".json"), currentTransaction);
                 } catch (IOException ex) {
                     logger.error(ex.getMessage());
-
                 }
             }
         });
@@ -432,28 +416,28 @@ public class SaleController implements Initializable, ManagedPane {
             public void handle(ActionEvent e) {
                 paypalMakePayment.setVisible(false);
                 currentTransaction.setPayment(payment);
-                payment.setAuthorizationCode("AUTH-2342342342");
-                authCode.setText(payment.getAuthorizationCode());
 
-                finishTransaction.setVisible(true);
-                authLabel.setVisible(true);
-                authCode.setVisible(true);
-                //receiptField.appendText(Utils.getReceiptFooter(subTotalField.getText(), discountPercentField.getText(), discountAmountField.getText(), taxField.getText(), totalField.getText()));
-
+                boolean isPaymentSuccess = payPalSdkAdapter.makePayment(payment);
+                if(isPaymentSuccess){
+                    authCode.setText(payment.getAuthorizationCode());
+                    finishTransaction.setVisible(true);
+                    authLabel.setVisible(true);
+                    authCode.setVisible(true);
+                } else {
+                    authCode.setText("PAYMENT FAILED");
+                    logger.error("Payment failed");
+                }
             }
         });
 
-
         paypalGrid.add(paypalMakePayment, 1, 2);
-
         paypalGrid.add(finishTransaction, 1, 3);
 
         paypalTitlePane.setText("PayPal Wallet");
         paypalTitlePane.setContent(paypalGrid);
 
-
         final TitledPane[] tps = new TitledPane[3];
-        final Accordion accordion = new Accordion ();
+        final Accordion accordion = new Accordion();
         tps[0] = cashTitlePane;
         tps[1] = debitCreditTitlePane;
         tps[2] = paypalTitlePane;
@@ -472,22 +456,19 @@ public class SaleController implements Initializable, ManagedPane {
         dialog.getActions().addAll(Dialog.Actions.CANCEL);
         validateLoyaltyFields();
 
-        // request focus on the username field by default (so the user can
-        // type immediately without having to click first)
+        // request focus on the username field by default
         Platform.runLater(new Runnable() {
             public void run() {
                 payCodeTextField.requestFocus();
             }
         });
-
         dialog.show();
     }
 
 
-
-
-    @FXML protected void setItemProfile(MouseEvent event) {
-        try{
+    @FXML
+    protected void setItemProfile(MouseEvent event) {
+        try {
             String itemSku = itemsListView.getSelectionModel().getSelectedItem();
             Item selectedItem = inStoreItemDAO.getById(itemSku);
             itemImage.setImage(new Image("/images/" + itemSku + ".jpg"));
@@ -496,50 +477,43 @@ public class SaleController implements Initializable, ManagedPane {
             unitPriceText.setText(selectedItem.getUnitPrice().toString());
             descriptionText.setText(selectedItem.getDescription().toString());
 
-        } catch (DalException e){
+        } catch (DalException e) {
             logger.error(e.getMessage());
         }
     }
 
 
-    @FXML protected void addItem(ActionEvent event) {
-        //int selectedIndex = itemsListView.getSelectionModel().getSelectedIndex();
-        //Item selectedItem = (Item) PayPalPos.inventoryMap.values().toArray()[selectedIndex];
+    @FXML
+    protected void addItem(ActionEvent event) {
         try {
             String itemSku = itemsListView.getSelectionModel().getSelectedItem();
             Item selectedItem = inStoreItemDAO.getById(itemSku);
-            receiptField.appendText("\n" + Utils.getDisplayName(selectedItem,"add"));
+            receiptField.appendText("\n" + Utils.getDisplayName(selectedItem, "add"));
             subtotal = subtotal + selectedItem.getUnitPrice().doubleValue();
-
             currentTransaction.getItems().add(selectedItem);
 
-            updateFields();
-        } catch (DalException e){
+            updateAmountFields();
+        } catch (DalException e) {
             logger.error(e.getMessage());
         }
     }
 
-    @FXML protected void removeItem(ActionEvent event) {
-        //int selectedIndex = itemsListView.getSelectionModel().getSelectedIndex();
-        //Item selectedItem = (Item) PayPalPos.inventoryMap.values().toArray()[selectedIndex];
-
+    @FXML
+    protected void removeItem(ActionEvent event) {
         try {
             String itemSku = itemsListView.getSelectionModel().getSelectedItem();
             Item selectedItem = inStoreItemDAO.getById(itemSku);
-            receiptField.appendText("\n " + Utils.getDisplayName(selectedItem,"remove"));
+            receiptField.appendText("\n " + Utils.getDisplayName(selectedItem, "remove"));
             subtotal = subtotal - selectedItem.getUnitPrice().doubleValue();
-
             currentTransaction.getItems().remove(selectedItem);
 
-            updateFields();
-        } catch (DalException e){
+            updateAmountFields();
+        } catch (DalException e) {
             logger.error(e.getMessage());
         }
-
-
     }
 
-    private void updateFields(){
+    private void updateAmountFields() {
         decimalSubtotal = new BigDecimal(Double.toString(subtotal));
         decimalSubtotal = decimalSubtotal.setScale(2, RoundingMode.HALF_UP);
         double discountPercent = 0.2;
@@ -563,25 +537,6 @@ public class SaleController implements Initializable, ManagedPane {
         totalBeforeTaxField.setText(currency.format(decimalTotalBeforeTax));
         taxField.setText(currency.format(decimalSalesTax));
         totalField.setText(currency.format(decimalTotal));
-    }
-
-
-
-    private void bindToTime() {
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(0),
-                        new EventHandler<ActionEvent>() {
-                            @Override public void handle(ActionEvent actionEvent) {
-                                Calendar time = Calendar.getInstance();
-                                SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
-                                timestampLabel.setText(sdf.format(time.getTime()));
-                            }
-                        }
-                ),
-                new KeyFrame(Duration.seconds(1))
-        );
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
     }
 
 }

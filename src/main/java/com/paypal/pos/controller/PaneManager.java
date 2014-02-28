@@ -15,6 +15,7 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 
 /**
+ * Created by pderoxas on 2/26/14.
  * This class will manage the panes in our application using a StackPane
  */
 public class PaneManager extends StackPane {
@@ -66,7 +67,7 @@ public class PaneManager extends StackPane {
                             @Override
                             public void handle(ActionEvent t) {
                                 getChildren().remove(0);                    //remove the displayed screen
-                                getChildren().add(0, panes.get(name));     //add the screen
+                                getChildren().add(0, panes.get(name));      //add the screen
                                 Timeline fadeIn = new Timeline(
                                         new KeyFrame(Duration.ZERO, new KeyValue(opacity, 0.0)),
                                         new KeyFrame(new Duration(400), new KeyValue(opacity, 1.0)));
@@ -77,7 +78,7 @@ public class PaneManager extends StackPane {
 
             } else {
                 setOpacity(0.0);
-                getChildren().add(panes.get(name));       //no one else been displayed, then just show
+                getChildren().add(panes.get(name));
                 Timeline fadeIn = new Timeline(
                         new KeyFrame(Duration.ZERO, new KeyValue(opacity, 0.0)),
                         new KeyFrame(new Duration(500), new KeyValue(opacity, 1.0)));

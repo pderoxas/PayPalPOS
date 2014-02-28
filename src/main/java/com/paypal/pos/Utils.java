@@ -1,15 +1,22 @@
 package com.paypal.pos;
 
 import com.paypal.pos.model.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
+import javafx.util.Duration;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by pderoxas on 2/25/14.
@@ -86,6 +93,23 @@ public class Utils {
         sb.append(getJustifiedString("                         Total", total + " ", 57));
 
         return sb.toString();
+    }
+
+    public static void bindToTime(Labeled label) {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0),
+                        new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent actionEvent) {
+                                Calendar time = Calendar.getInstance();
+                                SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+                                label.setText(sdf.format(time.getTime()));
+                            }
+                        }
+                ),
+                new KeyFrame(Duration.seconds(1))
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 
     private static String getCenteredString(String text, int midPoint){

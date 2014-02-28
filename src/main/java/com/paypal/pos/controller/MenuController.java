@@ -17,7 +17,9 @@ import org.controlsfx.dialog.Dialog;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
+/**
+ * Created by pderoxas on 2/26/14.
+ */
 public class MenuController implements Initializable, ManagedPane {
     private Logger logger = Logger.getLogger(this.getClass());
     PaneManager paneManager;
@@ -28,21 +30,19 @@ public class MenuController implements Initializable, ManagedPane {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         logger.debug("initializing...");
+
+        currentCashierLabel.setText("Cashier: " + PayPalPos.currentCashier);
 
         //TODO store these in a properties file
         storeNumberLabel.setText("Store: " + PayPalPos.location.getStoreNumber());
         registerNumber.setText("Location: " + PayPalPos.location.getRegisterNumber());
-        currentCashierLabel.setText("Cashier: " + PayPalPos.currentCashier);
 
-        //TODO
         if(PayPalPos.isStoreOpen){
             storeStatusLabel.setText("Location is currently: OPEN");
         } else {
             storeStatusLabel.setText("Location is currently: CLOSED");
         }
-
     }
 
     @Override
@@ -50,21 +50,14 @@ public class MenuController implements Initializable, ManagedPane {
         this.paneManager = paneManager;
     }
 
-
     @FXML protected void handleItemSale(MouseEvent event) {
-        //Just bring send to HOME
-        //TODO - add actual login logic
         paneManager.loadPane(PayPalPos.SALE, PayPalPos.SALE_FXML);
         paneManager.setPane(PayPalPos.SALE);
     }
 
     @FXML protected void handleItemReturn(MouseEvent event) {
-        //Just bring send to HOME
-        //TODO - add actual login logic
-        paneManager.setPane(PayPalPos.SALE);
-
+        //TODO - build return screen
     }
-
 
     @FXML protected void handleOpenCloseStore(MouseEvent event) {
         showOpenCloseStoreDialog();
@@ -98,15 +91,13 @@ public class MenuController implements Initializable, ManagedPane {
         {
             ButtonBar.setType(this, ButtonBar.ButtonType.OK_DONE);
         }
-
-        // This method is called when the Save button is clicked...
         public void execute(ActionEvent ae) {
             Dialog dialog = (Dialog) ae.getSource();
             dialog.hide();
             //store is currently closed, so open it
             PayPalPos.isStoreOpen = true;
             paneManager.setPane(PayPalPos.MENU);
-            storeStatusLabel.setText("Location is currently: OPEN");
+            storeStatusLabel.setText("Store is currently: OPEN");
         }
     };
 
@@ -114,15 +105,13 @@ public class MenuController implements Initializable, ManagedPane {
         {
             ButtonBar.setType(this, ButtonBar.ButtonType.OK_DONE);
         }
-
-        // This method is called when the Save button is clicked...
         public void execute(ActionEvent ae) {
             Dialog dialog = (Dialog) ae.getSource();
             dialog.hide();
             //store is currently open, so close it
             PayPalPos.isStoreOpen = false;
             paneManager.setPane(PayPalPos.MENU);
-            storeStatusLabel.setText("Location is currently: CLOSED");
+            storeStatusLabel.setText("Store is currently: CLOSED");
         }
     };
 }
