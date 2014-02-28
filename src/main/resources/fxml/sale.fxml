@@ -220,7 +220,7 @@
       </ImageView>
     </children>
   </TilePane>
-  <ImageView fitHeight="46.7631950378418" fitWidth="96.36052484632917" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0">
+  <ImageView fitHeight="46.7631950378418" fitWidth="96.36052484632917" onMouseClicked="#logout" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0">
     <image>
       <Image url="@../images/logout.png" />
     </image>
