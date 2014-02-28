@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import org.apache.log4j.Logger;
 import org.controlsfx.control.ButtonBar;
 import org.controlsfx.control.action.AbstractAction;
 import org.controlsfx.control.action.Action;
@@ -17,6 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable, ManagedPane {
+    private Logger logger = Logger.getLogger(this.getClass());
     PaneManager paneManager;
     @FXML private TextField username;
     @FXML private PasswordField password;
@@ -24,6 +26,8 @@ public class LoginController implements Initializable, ManagedPane {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //TODO
+
+        logger.debug("initializing...");
     }
 
     @Override
@@ -32,22 +36,26 @@ public class LoginController implements Initializable, ManagedPane {
     }
 
     @FXML protected void login(ActionEvent event) {
+        //set the current cashier details - Just single String for now
+        PayPalPos.currentCashier = username.getText();
         //Just bring send to HOME
         //TODO - add actual login logic
+        paneManager.loadPane(PayPalPos.MENU, PayPalPos.MENU_FXML);
         paneManager.setPane(PayPalPos.MENU);
-
     }
 
     @FXML protected void cancelLogin(ActionEvent event) {
         //Just clear fields
         username.clear();
         password.clear();
+        PayPalPos.currentCashier = null;
     }
 
     @FXML protected void logout(ActionEvent event) {
         //Just bring send to LOGIN
         //TODO - add actual logout logic
         paneManager.setPane(PayPalPos.LOGIN);
+        PayPalPos.currentCashier = null;
     }
 
 

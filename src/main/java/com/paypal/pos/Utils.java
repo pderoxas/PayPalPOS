@@ -1,8 +1,14 @@
 package com.paypal.pos;
 
 import com.paypal.pos.model.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.apache.commons.lang.StringUtils;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -18,6 +24,15 @@ public class Utils {
         int min=1000000, max=9999999;
         Random rand = new Random();
         return rand.nextInt((max - min) + 1) + min;
+    }
+
+    /**
+     * Helper function to populate list of items.  Will replace with bar code scanner
+     * @return
+     */
+    public static ObservableList<String> getItemSkuList(){
+        Collection<String> items = PayPalPos.inventoryMap.keySet();
+        return FXCollections.observableList(new ArrayList(items));
     }
 
     /**
@@ -53,18 +68,18 @@ public class Utils {
     public static String getReceiptHeader(String dateTime, String transactionId, String cashierName){
         StringBuilder sb = new StringBuilder();
         sb.append(getCenteredString("Acme Auto Parts\n", 29));
-        sb.append(getCenteredString("Store Number: 12345678\n", 29));
+        sb.append(getCenteredString("Location Number: 12345678\n", 29));
         sb.append(getCenteredString("Providence, RI 02903\n", 29));
         sb.append(getCenteredString("Phone: 401-555-5555\n", 29));
         sb.append(getJustifiedString(dateTime, transactionId, 57));
-        sb.append(getJustifiedString("Cashier: " + cashierName, "Register Number: 123", 57));
+        sb.append(getJustifiedString("Cashier: " + cashierName, "Location Number: 123", 57));
         sb.append("*********************************************************");
         return sb.toString();
     }
 
     public static String getReceiptFooter(String subTotal, String discountPercent, String discountAmount, String tax, String total){
         StringBuilder sb = new StringBuilder();
-        sb.append("\n*********************************************************");
+        sb.append("\n*********************************************************\n");
         sb.append(getJustifiedString("                         SubTotal", subTotal + " ", 57));
         sb.append(getJustifiedString("                         " + discountPercent + " Discount", "(" + discountAmount + ")", 57));
         sb.append(getJustifiedString("                         Tax", tax + " ", 57));

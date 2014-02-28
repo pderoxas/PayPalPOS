@@ -77,46 +77,51 @@
       <RowConstraints maxHeight="79.0" minHeight="7.0" prefHeight="23.0" vgrow="SOMETIMES" />
     </rowConstraints>
   </GridPane>
-  <TextArea fx:id="receiptField" editable="false" maxHeight="-1.0" prefHeight="420.0" prefWidth="439.0" styleClass="formattedText" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+  <TextArea fx:id="receiptField" editable="false" maxHeight="-1.0" prefHeight="420.0" prefWidth="439.0" style="" styleClass="formattedText" text="" wrapText="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
     <stylesheets>
       <URL value="@../styles/main.css" />
     </stylesheets>
   </TextArea>
-  <GridPane hgap="5.0" prefHeight="196.0" prefWidth="444.0" style="-fx-background-color: #E1E1FF;" vgap="5.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+  <GridPane alignment="CENTER" hgap="5.0" prefHeight="453.0000999999975" prefWidth="457.0" style="" vgap="5.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
     <children>
-      <ListView id="itemListView" fx:id="itemsListView" maxHeight="-1.0" minHeight="-1.0" prefHeight="321.0" prefWidth="444.0" styleClass="formattedText" GridPane.columnIndex="0" GridPane.rowIndex="0">
+      <ListView id="itemListView" fx:id="itemsListView" maxHeight="-1.0" maxWidth="-Infinity" minHeight="-1.0" onMouseClicked="#setItemProfile" prefHeight="332.0" prefWidth="166.0" styleClass="formattedText" GridPane.columnIndex="0" GridPane.rowIndex="0">
         <stylesheets>
           <URL value="@../styles/main.css" />
         </stylesheets>
       </ListView>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
         <children>
-          <GridPane alignment="CENTER" prefHeight="53.0" prefWidth="327.99993896484375">
-            <children>
-              <Button alignment="CENTER" contentDisplay="CENTER" disable="false" focusTraversable="true" onAction="#addItem" prefWidth="130.0" text="Add Item" textAlignment="CENTER" underline="false" visible="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-              <Button alignment="CENTER" contentDisplay="CENTER" onAction="#removeItem" prefWidth="130.0" text="Remove Item" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-            </children>
-            <columnConstraints>
-              <ColumnConstraints hgrow="SOMETIMES" maxWidth="166.0" minWidth="10.0" prefWidth="157.0" />
-              <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="49.0" />
-              <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="143.0" />
-            </columnConstraints>
-            <rowConstraints>
-              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-          </GridPane>
+          <Button alignment="CENTER" contentDisplay="CENTER" disable="false" focusTraversable="true" onAction="#addItem" prefWidth="130.0" text="Add Item" textAlignment="CENTER" underline="false" visible="true" />
         </children>
       </HBox>
       <GridPane maxHeight="-1.0" minHeight="-1.0" prefHeight="50.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
         <children>
           <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="175.0" text="Cashier:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-          <Label id="cashierNameLabel" fx:id="salesAssociateLabel" alignment="CENTER_LEFT" contentDisplay="CENTER" prefWidth="200.00006103515625" text="" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-          <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="175.0" text="Sales Associate:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-          <Text fx:id="cashierText" strokeType="OUTSIDE" strokeWidth="0.0" text="N/A" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-          <Text fx:id="salesAssociateText" strokeType="OUTSIDE" strokeWidth="0.0" text="N/A" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+          <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefWidth="175.0" text="Register:" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         </children>
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="188.0" />
+        </columnConstraints>
+        <padding>
+          <Insets bottom="10.0" top="10.0" />
+        </padding>
+        <rowConstraints>
+          <RowConstraints maxHeight="39.0" minHeight="1.0" prefHeight="34.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="41.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <children>
+          <Button alignment="CENTER" contentDisplay="CENTER" disable="false" focusTraversable="true" onAction="#removeItem" prefWidth="130.0" text="Remove Item" textAlignment="CENTER" underline="false" visible="true" />
+        </children>
+      </HBox>
+      <GridPane maxHeight="-1.0" minHeight="-1.0" prefHeight="50.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <children>
+          <Label id="cashierNameLabel" alignment="CENTER_LEFT" contentDisplay="CENTER" prefWidth="200.00006103515625" text="" textAlignment="RIGHT" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+          <Text fx:id="cashierText" strokeType="OUTSIDE" strokeWidth="0.0" text="N/A" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+          <Text id="salesAssociateText" fx:id="registerText" strokeType="OUTSIDE" strokeWidth="0.0" text="N/A" visible="true" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        </children>
+        <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="277.0" minWidth="10.0" prefWidth="256.0" />
         </columnConstraints>
         <padding>
@@ -127,14 +132,65 @@
           <RowConstraints maxHeight="41.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
+      <GridPane GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <children>
+          <ImageView fx:id="itemImage" fitHeight="219.0" fitWidth="219.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <image>
+              <Image url="@../images/noimage.jpg" />
+            </image>
+          </ImageView>
+          <GridPane id="skuText" gridLinesVisible="false" hgap="3.0" vgap="3.0" GridPane.columnIndex="0" GridPane.margin="$x2" GridPane.rowIndex="1">
+            <children>
+              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="98.0" style="" styleClass="itemProfile" text="SKU:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <stylesheets>
+                  <URL value="@../styles/main.css" />
+                </stylesheets>
+              </Label>
+              <Label alignment="CENTER_RIGHT" prefWidth="98.0" style="" styleClass="itemProfile" text="Unit Price:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <stylesheets>
+                  <URL value="@../styles/main.css" />
+                </stylesheets>
+              </Label>
+              <Label alignment="TOP_RIGHT" contentDisplay="TOP" prefHeight="17.0" prefWidth="97.17044067382812" style="" styleClass="itemProfile" text="Description:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                <stylesheets>
+                  <URL value="@../styles/main.css" />
+                </stylesheets>
+              </Label>
+              <Text fx:id="skuText" strokeType="OUTSIDE" strokeWidth="0.0" style="" styleClass="itemProfile" text="N/A" wrappingWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+              <Text fx:id="unitPriceText" strokeType="OUTSIDE" strokeWidth="0.0" style="" styleClass="itemProfile" text="N/A" wrappingWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+              <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" style="" styleClass="itemProfile" text="N/A" textAlignment="LEFT" wrappingWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            </children>
+            <columnConstraints>
+              <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="10.0" prefWidth="115.0" />
+              <ColumnConstraints hgrow="SOMETIMES" maxWidth="214.0" minWidth="10.0" prefWidth="172.0" />
+            </columnConstraints>
+            <padding>
+              <Insets fx:id="x2" />
+            </padding>
+            <rowConstraints>
+              <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="21.0" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="58.0" minHeight="10.0" prefHeight="21.0" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="110.0" minHeight="10.0" prefHeight="98.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+          </GridPane>
+        </children>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="254.0" minHeight="10.0" prefHeight="218.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="159.0" minHeight="0.0" prefHeight="140.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
     </children>
     <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="223.0" minWidth="10.0" prefWidth="165.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="287.0" />
     </columnConstraints>
     <rowConstraints>
-      <RowConstraints maxHeight="395.0" minHeight="10.0" prefHeight="324.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="344.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="344.0" minHeight="9.0" prefHeight="63.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="395.0" minHeight="10.0" prefHeight="358.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="344.0" minHeight="0.0" prefHeight="27.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="344.0" minHeight="9.0" prefHeight="58.0" vgrow="SOMETIMES" />
     </rowConstraints>
   </GridPane>
   <Label fx:id="timestampLabel" alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="430.0" text="Date Timestamp" textAlignment="RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="0" />
@@ -150,7 +206,6 @@
   <stylesheets>
     <URL value="@../styles/main.css" />
   </stylesheets>
-  <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="LEFT" visible="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
   <TilePane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
     <children>
       <ImageView fitHeight="104.16400146484375" fitWidth="85.59563667168057" onMouseClicked="#closeStore" pickOnBounds="true" preserveRatio="true">
@@ -165,4 +220,9 @@
       </ImageView>
     </children>
   </TilePane>
+  <ImageView fitHeight="46.7631950378418" fitWidth="96.36052484632917" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0">
+    <image>
+      <Image url="@../images/logout.png" />
+    </image>
+  </ImageView>
 </GridPane>

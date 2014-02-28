@@ -30,11 +30,6 @@ public class InStoreItem implements Item{
     }
 
     @Override
-    public double getDiscountPercent() {
-        return this.discountPercent;
-    }
-
-    @Override
     public Object getId() { return this.id; }
 
     @Override
@@ -45,5 +40,10 @@ public class InStoreItem implements Item{
     @Override
     public Currency getCurrency() {
         return currency != null ? currency : Currency.getInstance(Locale.US);
+    }
+
+    @Override
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }

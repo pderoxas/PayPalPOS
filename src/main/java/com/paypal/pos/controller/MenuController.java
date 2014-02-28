@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import org.apache.log4j.Logger;
 import org.controlsfx.control.ButtonBar;
 import org.controlsfx.control.action.AbstractAction;
 import org.controlsfx.control.action.Action;
@@ -18,16 +19,28 @@ import java.util.ResourceBundle;
 
 
 public class MenuController implements Initializable, ManagedPane {
+    private Logger logger = Logger.getLogger(this.getClass());
     PaneManager paneManager;
     @FXML private Label storeStatusLabel;
+    @FXML private Label currentCashierLabel;
+    @FXML private Label storeNumberLabel;
+    @FXML private Label registerNumber;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        logger.debug("initializing...");
+
+        //TODO store these in a properties file
+        storeNumberLabel.setText("Store: " + PayPalPos.location.getStoreNumber());
+        registerNumber.setText("Location: " + PayPalPos.location.getRegisterNumber());
+        currentCashierLabel.setText("Cashier: " + PayPalPos.currentCashier);
+
         //TODO
         if(PayPalPos.isStoreOpen){
-            storeStatusLabel.setText("Store is currently: OPEN");
+            storeStatusLabel.setText("Location is currently: OPEN");
         } else {
-            storeStatusLabel.setText("Store is currently: CLOSED");
+            storeStatusLabel.setText("Location is currently: CLOSED");
         }
 
     }
@@ -41,8 +54,8 @@ public class MenuController implements Initializable, ManagedPane {
     @FXML protected void handleItemSale(MouseEvent event) {
         //Just bring send to HOME
         //TODO - add actual login logic
+        paneManager.loadPane(PayPalPos.SALE, PayPalPos.SALE_FXML);
         paneManager.setPane(PayPalPos.SALE);
-
     }
 
     @FXML protected void handleItemReturn(MouseEvent event) {
@@ -58,7 +71,7 @@ public class MenuController implements Initializable, ManagedPane {
     }
 
     protected void showOpenCloseStoreDialog() {
-        Dialog dialog = new Dialog(null, "Open/Close Store", true);
+        Dialog dialog = new Dialog(null, "Open/Close Location", true);
 
         final GridPane content = new GridPane();
         content.setHgap(10);
@@ -93,7 +106,7 @@ public class MenuController implements Initializable, ManagedPane {
             //store is currently closed, so open it
             PayPalPos.isStoreOpen = true;
             paneManager.setPane(PayPalPos.MENU);
-            storeStatusLabel.setText("Store is currently: OPEN");
+            storeStatusLabel.setText("Location is currently: OPEN");
         }
     };
 
@@ -109,7 +122,7 @@ public class MenuController implements Initializable, ManagedPane {
             //store is currently open, so close it
             PayPalPos.isStoreOpen = false;
             paneManager.setPane(PayPalPos.MENU);
-            storeStatusLabel.setText("Store is currently: CLOSED");
+            storeStatusLabel.setText("Location is currently: CLOSED");
         }
     };
 }

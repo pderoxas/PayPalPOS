@@ -16,5 +16,5 @@ public interface Item<K> {
     public String getDescription();
     public Currency getCurrency();
     public BigDecimal getUnitPrice();
-    public double getDiscountPercent();
+    public void setUnitPrice(BigDecimal unitPrice);
 }

@@ -14,7 +14,11 @@ public class PayPalSdkAdapter {
     }
 
     public PayPalWallet getWallet(String payCode){
-        return new PayPalWallet();
+        PayPalWallet wallet = new PayPalWallet();
+        wallet.setCustomerName("Paolo de Roxas");
+        wallet.setLoyaltyNumber("5746388294");
+        wallet.setPaycode(payCode);
+        return wallet;
     }
 
     public void openStore(String storeId){

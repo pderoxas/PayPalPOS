@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- ######################## START - Log4j Appenders ######################## -->
+    <appender name="nullAppender" class="org.apache.log4j.varia.NullAppender"/>
+
+    <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} | %X{sessionId} | %p | %c | %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="defaultFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/var/log/paypal/debug.log"/>
+        <param name="datePattern" value="'.'yyyy-MM-dd"/>
+        <param name="append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} | %X{sessionId} | %p | %c | %m%n"/>
+        </layout>
+    </appender>
+
+
+    <appender name="controllersFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/var/log/paypal/controller/debug.log"/>
+        <param name="datePattern" value="'.'yyyy-MM-dd"/>
+        <param name="append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} | %X{sessionId} | %p | %c | %m%n"/>
+        </layout>
+    </appender>
+    <!-- ######################### END - Log4j Appenders ######################### -->
+
+
+    <!-- ######################### START - Log4j Loggers ######################### -->
+    <!--
+      The Perf4J logger. Note that org.perf4j.TimingLogger is the value of the
+      org.perf4j.StopWatch.DEFAULT_LOGGER_NAME constant. Also, note that
+      additivity is set to false, which is usually what is desired - this means
+      that timing statements will only be sent to this logger and NOT to
+      upstream loggers.
+    -->
+    <logger name="com.paypal.pos.controller">
+        <level value="DEBUG"/>
+        <appender-ref ref="controllersFileAppender"/>
+    </logger>
+
+    <!-- This is the default log4j logger -->
+    <root>
+        <priority value="DEBUG"/>
+        <appender-ref ref="consoleAppender"/>
+    </root>
+    <!-- ######################### END - Log4j Loggers ######################### -->
+</log4j:configuration>

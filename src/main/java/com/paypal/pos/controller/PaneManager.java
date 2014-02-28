@@ -12,11 +12,14 @@ import java.util.HashMap;
         import javafx.scene.Parent;
         import javafx.scene.layout.StackPane;
         import javafx.util.Duration;
+import org.apache.log4j.Logger;
 
 /**
  * This class will manage the panes in our application using a StackPane
  */
 public class PaneManager extends StackPane {
+    private Logger logger = Logger.getLogger(this.getClass());
+
     //Collection of the panes available
     private HashMap<String, Node> panes = new HashMap<String, Node>();
 
@@ -41,12 +44,12 @@ public class PaneManager extends StackPane {
         try {
             FXMLLoader myLoader = new FXMLLoader(getClass().getResource(resource));
             Parent loadScreen = (Parent) myLoader.load();
-            ManagedPane myScreenControler = ((ManagedPane) myLoader.getController());
-            myScreenControler.setParent(this);
+            ManagedPane myManagedPane = ((ManagedPane) myLoader.getController());
+            myManagedPane.setParent(this);
             addPane(name, loadScreen);
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
             return false;
         }
     }
@@ -77,12 +80,12 @@ public class PaneManager extends StackPane {
                 getChildren().add(panes.get(name));       //no one else been displayed, then just show
                 Timeline fadeIn = new Timeline(
                         new KeyFrame(Duration.ZERO, new KeyValue(opacity, 0.0)),
-                        new KeyFrame(new Duration(2500), new KeyValue(opacity, 1.0)));
+                        new KeyFrame(new Duration(500), new KeyValue(opacity, 1.0)));
                 fadeIn.play();
             }
             return true;
         } else {
-            System.out.println("screen hasn't been loaded!!! \n");
+            logger.info(name + " pane has not been loaded.");
             return false;
         }
     }
@@ -90,9 +93,10 @@ public class PaneManager extends StackPane {
     //Remove pane from the collection by name
     public boolean removePane(String name) {
         if (panes.remove(name) == null) {
-            System.out.println("Screen didn't exist");
+            logger.info(name + " pane does not exist in the collection");
             return false;
         } else {
+            logger.info(name + " pane has been removed from the collection");
             return true;
         }
     }
